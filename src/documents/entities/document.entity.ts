@@ -25,11 +25,11 @@ export class Document {
   @Column()
   originalFilename: string;
 
-  @Column()
-  storagePath: string;
+  @Column({ type: 'bytea', nullable: true })
+  pdfData: Buffer;
 
-  @Column({ nullable: true })
-  flattenedPath: string;
+  @Column({ type: 'bytea', nullable: true })
+  flattenedPdfData: Buffer;
 
   @Column({ default: 'draft' })
   status: 'draft' | 'sent' | 'completed';

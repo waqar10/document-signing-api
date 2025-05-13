@@ -9,7 +9,8 @@ import {
   Req, 
   Res, 
   UseGuards,
-  NotFoundException
+  NotFoundException,
+  BadRequestException
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentsService } from './documents.services';
@@ -31,6 +32,10 @@ export class DocumentsController {
     @Body() createDocumentDto: CreateDocumentDto,
     @Req() req: Request & { user: { id: string } }
   ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+    console.log('hereeeeeeeeeeeeeeeeeeeeeee')
     console.log('Authenticated user:', req.user); // Debug log
     return this.documentsService.createDocument(
       req.user.id,
@@ -87,6 +92,8 @@ export class DocumentsController {
     @Param('token') token: string,
     @Body() signDocumentDto: SignDocumentDto,
   ) {
+    // console.log('DTO check', JSON.stringify(signDocumentDto, null, 2));
+    // console.log('Is array?', Array.isArray(signDocumentDto.fields));
     return this.documentsService.submitSignature(token, signDocumentDto);
   }
 
